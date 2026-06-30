@@ -3,40 +3,31 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SJRC FREE — База данных и приложения</title>
+    <title>SJRC FREE — База данных и приложения (ПК версия)</title>
     <style>
-        /* Базовые стили темной минималистичной темы */
+        /* Адаптивная резиновая верстка без ограничений по ширине */
         body { margin: 0; padding: 0; background-color: #121212; color: #e0e0e0; font-family: sans-serif; line-height: 1.6; }
-        .container { max-width: 800px; margin: 0 auto; padding: 40px 20px; }
-        header { text-align: center; margin-bottom: 50px; }
-        h1 { color: #ffffff; font-size: 2.5rem; margin-bottom: 10px; }
-        .subtitle { color: #888888; font-size: 1.1rem; }
-        section { background-color: #1e1e1e; border-radius: 12px; padding: 30px; margin-bottom: 30px; border: 1px solid #2d2d2d; }
-        h2 { color: #ffffff; margin-top: 0; font-size: 1.5rem; border-bottom: 1px solid #2d2d2d; padding-bottom: 10px; }
-        .app-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-        @media (max-width: 600px) { .app-grid { grid-template-columns: 1fr; } }
-        .app-card { background: #252525; border: 1px solid #333333; border-radius: 8px; padding: 20px; text-align: center; }
-        .btn { display: inline-block; background-color: #ffffff; color: #121212; padding: 10px 20px; text-decoration: none; border-radius: 6px; font-weight: 600; margin-top: 15px; width: 80%; }
-        .disclaimer { font-size: 0.9rem; color: #777777; border-left: 3px solid #ff4444; padding-left: 15px; }
-        .social-links { display: flex; justify-content: center; gap: 15px; margin-top: 40px; flex-wrap: wrap; }
-        .social-links a { color: #888888; text-decoration: none; padding: 8px 16px; border: 1px solid #2d2d2d; border-radius: 20px; }
+        .container { width: 94%; max-width: 100%; margin: 0 auto; padding: 30px 0; }
+        header { text-align: center; margin-bottom: 40px; }
+        h1 { color: #ffffff; font-size: 2.8rem; margin-bottom: 5px; }
+        .subtitle { color: #888888; font-size: 1.2rem; }
+        section { background-color: #1e1e1e; border-radius: 12px; padding: 30px; margin-bottom: 25px; border: 1px solid #2d2d2d; }
+        h2 { color: #ffffff; margin-top: 0; border-bottom: 1px solid #2d2d2d; padding-bottom: 12px; }
+        .app-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 25px; }
+        .app-card { background: #252525; border: 1px solid #333333; border-radius: 8px; padding: 25px; text-align: center; }
+        .btn { display: inline-block; background-color: #ffffff; color: #121212; padding: 12px 24px; text-decoration: none; border-radius: 6px; font-weight: 600; margin-top: 15px; }
+        .social-links { display: flex; justify-content: center; gap: 15px; margin-top: 50px; flex-wrap: wrap; }
+        .social-links a { color: #888888; text-decoration: none; padding: 10px 20px; border: 1px solid #2d2d2d; border-radius: 20px; }
     </style>
 </head>
 <body>
 <div class="container">
-    <header><h1>SJRC FREE</h1><div class="subtitle">Сравнение квадрокоптеров и приложения</div></header>
-    <section>
-        <h2>О проекте</h2>
-        <p>База данных и модифицированные приложения для квадрокоптеров SJRC.</p>
-    </section>
-    <section>
-        <h2>Скачать</h2>
-        <div class="app-grid">
-            <div class="app-card"><h3>SJRC FREE</h3><a href="#" class="btn">RuStore</a></div>
-            <div class="app-card"><h3>SJRC FREE iPAD</h3><a href="#" class="btn">RuStore</a></div>
-        </div>
-    </section>
-    <div class="social-links"><a href="#">Telegram</a><a href="#">VK</a><a href="#">YouTube</a></div>
+    <header><h1>SJRC FREE</h1><div class="subtitle">База данных и приложения</div></header>
+    <section><h2>О проекте</h2><p>Сообщество SJRC FREE: база знаний и сравнение квадрокоптеров.</p></section>
+    <section><h2>Приложения</h2><div class="app-grid">
+        <div class="app-card"><h3>SJRC FREE</h3><a href="#" class="btn">RuStore</a></div>
+        <div class="app-card"><h3>SJRC FREE iPAD</h3><a href="#" class="btn">RuStore</a></div>
+    </div></section>
 </div>
 </body>
 </html>
