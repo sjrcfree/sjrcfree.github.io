@@ -3,31 +3,245 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SJRC FREE — База данных и приложения (ПК версия)</title>
+    <title>SJRC FREE — База данных и приложения</title>
     <style>
-        /* Адаптивная резиновая верстка без ограничений по ширине */
-        body { margin: 0; padding: 0; background-color: #121212; color: #e0e0e0; font-family: sans-serif; line-height: 1.6; }
-        .container { width: 94%; max-width: 100%; margin: 0 auto; padding: 30px 0; }
+        /* Переменные для легкой смены тем */
+        :root {
+            --bg-color: #121212;
+            --container-bg: #1e1e1e;
+            --card-bg: #252525;
+            --text-color: #e0e0e0;
+            --text-main: #ffffff;
+            --text-muted: #888888;
+            --border-color: #2d2d2d;
+            --card-border: #333333;
+            --btn-bg: #ffffff;
+            --btn-text: #121212;
+        }
+
+        [data-theme="light"] {
+            --bg-color: #f5f5f7;
+            --container-bg: #ffffff;
+            --card-bg: #f0f0f2;
+            --text-color: #333333;
+            --text-main: #111111;
+            --text-muted: #666666;
+            --border-color: #e5e5e7;
+            --card-border: #dddddf;
+            --btn-bg: #111111;
+            --btn-text: #ffffff;
+        }
+
+        /* Общие адаптивные стили */
+        body { 
+            margin: 0; 
+            padding: 0; 
+            background-color: var(--bg-color); 
+            color: var(--text-color); 
+            font-family: sans-serif; 
+            line-height: 1.6;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        
+        /* Верхняя панель управления (из раннего сайта) */
+        .top-panel {
+            background-color: var(--container-bg);
+            border-bottom: 1px solid var(--border-color);
+            padding: 10px 3%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .top-panel-left, .top-panel-right {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .lang-select, .theme-toggle, .donate-btn {
+            background: none;
+            border: 1px solid var(--border-color);
+            color: var(--text-color);
+            padding: 6px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            transition: all 0.2s;
+        }
+
+        .lang-select:hover, .theme-toggle:hover {
+            background-color: var(--card-bg);
+        }
+
+        .lang-select.active {
+            background-color: var(--btn-bg);
+            color: var(--btn-text);
+            border-color: var(--btn-bg);
+        }
+
+        .donate-btn {
+            background-color: #ff9900;
+            color: #fff;
+            border-color: #ff9900;
+            font-weight: bold;
+        }
+
+        .donate-btn:hover {
+            background-color: #e68a00;
+            border-color: #e68a00;
+        }
+
+        /* Контентная зона */
+        .container { 
+            width: 94%; 
+            max-width: 100%; 
+            margin: 0 auto; 
+            padding: 30px 0; 
+        }
+        
         header { text-align: center; margin-bottom: 40px; }
-        h1 { color: #ffffff; font-size: 2.8rem; margin-bottom: 5px; }
-        .subtitle { color: #888888; font-size: 1.2rem; }
-        section { background-color: #1e1e1e; border-radius: 12px; padding: 30px; margin-bottom: 25px; border: 1px solid #2d2d2d; }
-        h2 { color: #ffffff; margin-top: 0; border-bottom: 1px solid #2d2d2d; padding-bottom: 12px; }
-        .app-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 25px; }
-        .app-card { background: #252525; border: 1px solid #333333; border-radius: 8px; padding: 25px; text-align: center; }
-        .btn { display: inline-block; background-color: #ffffff; color: #121212; padding: 12px 24px; text-decoration: none; border-radius: 6px; font-weight: 600; margin-top: 15px; }
+        h1 { color: var(--text-main); font-size: 2.8rem; margin-bottom: 5px; }
+        .subtitle { color: var(--text-muted); font-size: 1.2rem; }
+        
+        section { 
+            background-color: var(--container-bg); 
+            border-radius: 12px; 
+            padding: 30px; 
+            margin-bottom: 25px; 
+            border: 1px solid var(--border-color); 
+        }
+        
+        h2 { color: var(--text-main); margin-top: 0; border-bottom: 1px solid var(--border-color); padding-bottom: 12px; }
+        
+        /* Таблицы или сетка карточек */
+        .app-grid { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); 
+            gap: 25px; 
+        }
+        
+        .app-card { 
+            background: var(--card-bg); 
+            border: 1px solid var(--card-border); 
+            border-radius: 8px; 
+            padding: 25px; 
+            text-align: center; 
+        }
+
+        .app-card h3 { color: var(--text-main); margin-top: 0; }
+        
+        .btn { 
+            display: inline-block; 
+            background-color: var(--btn-bg); 
+            color: var(--btn-text); 
+            padding: 12px 24px; 
+            text-decoration: none; 
+            border-radius: 6px; 
+            font-weight: 600; 
+            margin-top: 15px; 
+            transition: opacity 0.2s;
+        }
+        .btn:hover { opacity: 0.9; }
+
         .social-links { display: flex; justify-content: center; gap: 15px; margin-top: 50px; flex-wrap: wrap; }
-        .social-links a { color: #888888; text-decoration: none; padding: 10px 20px; border: 1px solid #2d2d2d; border-radius: 20px; }
+        .social-links a { color: var(--text-muted); text-decoration: none; padding: 10px 20px; border: 1px solid var(--border-color); border-radius: 20px; }
+        .social-links a:hover { background-color: var(--container-bg); color: var(--text-main); }
     </style>
 </head>
 <body>
-<div class="container">
-    <header><h1>SJRC FREE</h1><div class="subtitle">База данных и приложения</div></header>
-    <section><h2>О проекте</h2><p>Сообщество SJRC FREE: база знаний и сравнение квадрокоптеров.</p></section>
-    <section><h2>Приложения</h2><div class="app-grid">
-        <div class="app-card"><h3>SJRC FREE</h3><a href="#" class="btn">RuStore</a></div>
-        <div class="app-card"><h3>SJRC FREE iPAD</h3><a href="#" class="btn">RuStore</a></div>
-    </div></section>
+
+<!-- Наша верхняя панель из Gist -->
+<div class="top-panel">
+    <div class="top-panel-left">
+        <button class="lang-select active" onclick="setLanguage('RU')">RUS</button>
+        <button class="lang-select" onclick="setLanguage('EN')">ENG</button>
+    </div>
+    <div class="top-panel-right">
+        <button class="theme-toggle" onclick="toggleTheme()" id="themeBtn">Тёмная тема</button>
+        <a href="#" class="donate-btn">Донат</a>
+    </div>
 </div>
+
+<div class="container">
+    <header>
+        <h1>SJRC FREE</h1>
+        <div class="subtitle" id="siteSubtitle">База данных и приложения</div>
+    </header>
+    
+    <section>
+        <h2 id="aboutTitle">О проекте</h2>
+        <p id="aboutText">Сообщество SJRC FREE: база знаний и сравнение квадрокоптеров.</p>
+    </section>
+    
+    <section>
+        <h2 id="appsTitle">Приложения</h2>
+        <div class="app-grid">
+            <div class="app-card">
+                <h3>SJRC FREE</h3>
+                <a href="#" class="btn">RuStore</a>
+            </div>
+            <div class="app-card">
+                <h3>SJRC FREE iPAD</h3>
+                <a href="#" class="btn">RuStore</a>
+            </div>
+        </div>
+    </section>
+
+    <div class="social-links">
+        <a href="#">Telegram</a>
+        <a href="#">VK</a>
+        <a href="#">YouTube</a>
+    </div>
+</div>
+
+<script>
+    // Скрипт переключения темы (с сохранением выбора в браузере)
+    function toggleTheme() {
+        const currentTheme = document.documentElement.getAttribute('data-theme');
+        const themeBtn = document.getElementById('themeBtn');
+        
+        if (currentTheme === 'light') {
+            document.documentElement.removeAttribute('data-theme');
+            themeBtn.innerText = 'Тёмная тема';
+            localStorage.setItem('theme', 'dark');
+        } else {
+            document.documentElement.setAttribute('data-theme', 'light');
+            themeBtn.innerText = 'Светлая тема';
+            localStorage.setItem('theme', 'light');
+        }
+    }
+
+    // Восстановление темы при загрузке страницы
+    if (localStorage.getItem('theme') === 'light') {
+        document.documentElement.setAttribute('data-theme', 'light');
+        document.getElementById('themeBtn').innerText = 'Светлая тема';
+    }
+
+    // Простейшая заготовка под мультиязычность
+    function setLanguage(lang) {
+        const buttons = document.querySelectorAll('.lang-select');
+        buttons.forEach(btn => btn.classList.remove('active'));
+        
+        // Подсвечиваем выбранную кнопку
+        event.target.classList.add('active');
+
+        // Пример изменения текстов на лету
+        if (lang === 'EN') {
+            document.getElementById('siteSubtitle').innerText = 'Database and applications';
+            document.getElementById('aboutTitle').innerText = 'About Project';
+            document.getElementById('aboutText').innerText = 'SJRC FREE Community: knowledge base and drone comparison.';
+            document.getElementById('appsTitle').innerText = 'Applications';
+        } else {
+            document.getElementById('siteSubtitle').innerText = 'База данных и приложения';
+            document.getElementById('aboutTitle').innerText = 'О проекте';
+            document.getElementById('aboutText').innerText = 'Сообщество SJRC FREE: база знаний и сравнение квадрокоптеров.';
+            document.getElementById('appsTitle').innerText = 'Приложения';
+        }
+    }
+</script>
 </body>
 </html>
