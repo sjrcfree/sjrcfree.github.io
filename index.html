@@ -43,7 +43,7 @@
             transition: background-color 0.3s, color 0.3s;
         }
         
-        /* Верхняя панель управления (из раннего сайта) */
+        /* Верхняя панель управления */
         .top-panel {
             background-color: var(--container-bg);
             border-bottom: 1px solid var(--border-color);
@@ -117,7 +117,6 @@
         
         h2 { color: var(--text-main); margin-top: 0; border-bottom: 1px solid var(--border-color); padding-bottom: 12px; }
         
-        /* Таблицы или сетка карточек */
         .app-grid { 
             display: grid; 
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); 
@@ -154,14 +153,14 @@
 </head>
 <body>
 
-<!-- Наша верхняя панель из Gist -->
 <div class="top-panel">
     <div class="top-panel-left">
         <button class="lang-select active" onclick="setLanguage('RU')">RUS</button>
         <button class="lang-select" onclick="setLanguage('EN')">ENG</button>
     </div>
     <div class="top-panel-right">
-        <button class="theme-toggle" onclick="toggleTheme()" id="themeBtn">Тёмная тема</button>
+        <!-- По умолчанию сайт темный, значит кнопка должна предлагать Светлую тему -->
+        <button class="theme-toggle" onclick="toggleTheme()" id="themeBtn">Светлая тема</button>
         <a href="#" class="donate-btn">Донат</a>
     </div>
 </div>
@@ -199,18 +198,20 @@
 </div>
 
 <script>
-    // Скрипт переключения темы (с сохранением выбора в браузере)
+    // Скрипт переключения темы (теперь надписи отображаются корректно)
     function toggleTheme() {
         const currentTheme = document.documentElement.getAttribute('data-theme');
         const themeBtn = document.getElementById('themeBtn');
         
         if (currentTheme === 'light') {
+            // Переключаем на ТЁМНУЮ тему
             document.documentElement.removeAttribute('data-theme');
-            themeBtn.innerText = 'Тёмная тема';
+            themeBtn.innerText = 'Светлая тема'; // Кнопка предлагает включить светлую
             localStorage.setItem('theme', 'dark');
         } else {
+            // Переключаем на СВЕТЛУЮ тему
             document.documentElement.setAttribute('data-theme', 'light');
-            themeBtn.innerText = 'Светлая тема';
+            themeBtn.innerText = 'Тёмная тема'; // Кнопка предлагает вернуть тёмную
             localStorage.setItem('theme', 'light');
         }
     }
@@ -218,18 +219,21 @@
     // Восстановление темы при загрузке страницы
     if (localStorage.getItem('theme') === 'light') {
         document.documentElement.setAttribute('data-theme', 'light');
+        document.getElementById('themeBtn').innerText = 'Тёмная тема';
+    } else {
         document.getElementById('themeBtn').innerText = 'Светлая тема';
     }
 
-    // Простейшая заготовка под мультиязычность
+    // Функция мультиязычности
     function setLanguage(lang) {
         const buttons = document.querySelectorAll('.lang-select');
         buttons.forEach(btn => btn.classList.remove('active'));
         
-        // Подсвечиваем выбранную кнопку
-        event.target.classList.add('active');
+        // Подсвечиваем активную кнопку языка
+        if (event && event.target) {
+            event.target.classList.add('active');
+        }
 
-        // Пример изменения текстов на лету
         if (lang === 'EN') {
             document.getElementById('siteSubtitle').innerText = 'Database and applications';
             document.getElementById('aboutTitle').innerText = 'About Project';
