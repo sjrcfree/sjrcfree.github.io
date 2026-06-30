@@ -32,7 +32,6 @@
             --btn-text: #ffffff;
         }
 
-        /* Общие адаптивные стили */
         body { 
             margin: 0; 
             padding: 0; 
@@ -59,7 +58,13 @@
             gap: 15px;
         }
 
-        .lang-select, .theme-toggle, .donate-btn {
+        /* Выпадающий список языков */
+        .lang-dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .lang-btn, .theme-toggle, .donate-btn {
             background: none;
             border: 1px solid var(--border-color);
             color: var(--text-color);
@@ -70,17 +75,65 @@
             text-decoration: none;
             display: inline-flex;
             align-items: center;
+            gap: 8px;
             transition: all 0.2s;
         }
 
-        .lang-select:hover, .theme-toggle:hover {
+        .lang-btn:hover, .theme-toggle:hover {
             background-color: var(--card-bg);
         }
 
-        .lang-select.active {
-            background-color: var(--btn-bg);
-            color: var(--btn-text);
-            border-color: var(--btn-bg);
+        .lang-btn img {
+            width: 20px;
+            height: auto;
+            border-radius: 2px;
+        }
+
+        .lang-btn .arrow {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+        }
+
+        .lang-menu {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background-color: var(--container-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            margin-top: 5px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+            z-index: 100;
+            min-width: 110px;
+        }
+
+        .lang-menu.show {
+            display: block;
+        }
+
+        .lang-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            width: 100%;
+            padding: 8px 12px;
+            background: none;
+            border: none;
+            color: var(--text-color);
+            cursor: pointer;
+            text-align: left;
+            font-size: 0.9rem;
+        }
+
+        .lang-item:hover {
+            background-color: var(--card-bg);
+        }
+
+        .lang-item img {
+            width: 20px;
+            height: auto;
+            border-radius: 2px;
         }
 
         .donate-btn {
@@ -155,16 +208,27 @@
 
 <div class="top-panel">
     <div class="top-panel-left">
-        <button class="lang-select active" onclick="setLanguage('RU')">RUS</button>
-        <button class="lang-select" onclick="setLanguage('EN')">ENG</button>
+        <div class="lang-dropdown">
+            <button class="lang-btn" onclick="toggleLangMenu(event)">
+                <img id="currentFlag" src="https://flagcdn.com" alt="RU">
+                <span id="currentLangText">RU</span>
+                <span class="arrow">▼</span>
+            </button>
+            <div class="lang-menu" id="langMenu">
+                <button class="lang-item" onclick="changeLanguage('RU', 'https://flagcdn.com')">
+                    <img src="https://flagcdn.com" alt="RU"> RU
+                </button>
+                <button class="lang-item" onclick="changeLanguage('EN', 'https://flagcdn.com')">
+                    <img src="https://flagcdn.com" alt="EN"> EN
+                </button>
+            </div>
+        </div>
     </div>
     <div class="top-panel-right">
-        <!-- По умолчанию сайт темный, значит кнопка должна предлагать Светлую тему -->
         <button class="theme-toggle" onclick="toggleTheme()" id="themeBtn">Светлая тема</button>
         <a href="#" class="donate-btn">Донат</a>
     </div>
 </div>
-
 <div class="container">
     <header>
         <h1>SJRC FREE</h1>
@@ -198,42 +262,22 @@
 </div>
 
 <script>
-    // Скрипт переключения темы (теперь надписи отображаются корректно)
-    function toggleTheme() {
-        const currentTheme = document.documentElement.getAttribute('data-theme');
-        const themeBtn = document.getElementById('themeBtn');
-        
-        if (currentTheme === 'light') {
-            // Переключаем на ТЁМНУЮ тему
-            document.documentElement.removeAttribute('data-theme');
-            themeBtn.innerText = 'Светлая тема'; // Кнопка предлагает включить светлую
-            localStorage.setItem('theme', 'dark');
-        } else {
-            // Переключаем на СВЕТЛУЮ тему
-            document.documentElement.setAttribute('data-theme', 'light');
-            themeBtn.innerText = 'Тёмная тема'; // Кнопка предлагает вернуть тёмную
-            localStorage.setItem('theme', 'light');
-        }
+    // Логика выпадающего меню языков
+    function toggleLangMenu(event) {
+        event.stopPropagation();
+        document.getElementById('langMenu').classList.toggle('show');
     }
 
-    // Восстановление темы при загрузке страницы
-    if (localStorage.getItem('theme') === 'light') {
-        document.documentElement.setAttribute('data-theme', 'light');
-        document.getElementById('themeBtn').innerText = 'Тёмная тема';
-    } else {
-        document.getElementById('themeBtn').innerText = 'Светлая тема';
+    // Закрывать меню при клике в любое другое место экрана
+    window.onclick = function() {
+        document.getElementById('langMenu').classList.remove('show');
     }
 
-    // Функция мультиязычности
-    function setLanguage(lang) {
-        const buttons = document.querySelectorAll('.lang-select');
-        buttons.forEach(btn => btn.classList.remove('active'));
+    // Переключение языков с обновлением флага на главной кнопке [bb3e9cbd1baaf856167cdfea41942d9e]
+    function changeLanguage(lang, flagUrl) {
+        document.getElementById('currentFlag').src = flagUrl;
+        document.getElementById('currentLangText').innerText = lang;
         
-        // Подсвечиваем активную кнопку языка
-        if (event && event.target) {
-            event.target.classList.add('active');
-        }
-
         if (lang === 'EN') {
             document.getElementById('siteSubtitle').innerText = 'Database and applications';
             document.getElementById('aboutTitle').innerText = 'About Project';
@@ -245,6 +289,30 @@
             document.getElementById('aboutText').innerText = 'Сообщество SJRC FREE: база знаний и сравнение квадрокоптеров.';
             document.getElementById('appsTitle').innerText = 'Приложения';
         }
+    }
+
+    // Переключение тёмной/светлой темы [bb3e9cbd1baaf856167cdfea41942d9e]
+    function toggleTheme() {
+        const currentTheme = document.documentElement.getAttribute('data-theme');
+        const themeBtn = document.getElementById('themeBtn');
+        
+        if (currentTheme === 'light') {
+            document.documentElement.removeAttribute('data-theme');
+            themeBtn.innerText = 'Светлая тема';
+            localStorage.setItem('theme', 'dark');
+        } else {
+            document.documentElement.setAttribute('data-theme', 'light');
+            themeBtn.innerText = 'Тёмная тема';
+            localStorage.setItem('theme', 'light');
+        }
+    }
+
+    // Восстановление темы из памяти браузера при загрузке страницы [bb3e9cbd1baaf856167cdfea41942d9e]
+    if (localStorage.getItem('theme') === 'light') {
+        document.documentElement.setAttribute('data-theme', 'light');
+        document.getElementById('themeBtn').innerText = 'Тёмная тема';
+    } else {
+        document.getElementById('themeBtn').innerText = 'Светлая тема';
     }
 </script>
 </body>
